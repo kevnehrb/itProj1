@@ -12,14 +12,15 @@ def createDict():
 
 def lookUp(hostname):
 	found = False
+	result = hostname
 	for i in dns:
 		for j in i:
 			if hostname.lower() == j.lower():
 				found = True
-	if found:
-		print("its in there")
-	else:
-		print("doo doo feces")
+				result += " "+i[1]+" "+i[2]
+	if not found:
+		result += " - Error: HOST NOT FOUND"
+	return result
 
 def server():
 	try:
@@ -43,4 +44,4 @@ def server():
 
 
 createDict()
-lookUp("www.rutgers.COM")
+lookUp("www.rutgers.")
