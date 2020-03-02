@@ -10,6 +10,10 @@ def createDict():
 		dns.append(newEntry)
 	inputFile.close()
 
+def printDict():
+	for entry in dns:
+		print(entry)
+
 def lookUp(hostname):
 	found = False
 	result = hostname
@@ -38,7 +42,6 @@ def server():
 	print("[S]: Server IP address is  ",localhost_ip)
 	csockid,addr=rss.accept()
 	print ("[S]: Got a connection request from a client at", addr)
-
 
 
 

@@ -10,6 +10,10 @@ def createDict():
 		dns.append(newEntry)
 	inputFile.close()
 
+def printDict():
+	for entry in dns:
+		print(entry)
+
 def lookUp(hostname):
 	found = False
 	result = hostname
