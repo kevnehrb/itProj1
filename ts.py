@@ -45,6 +45,7 @@ def server():
 	csockid, addr = tss.accept()
 	print ("[S]: Got a connection request from a client at", addr)
 
+	tss.close()
 
 createDict()
 server()

@@ -45,6 +45,7 @@ def server():
 	csockid, addr = rss.accept()
 	print ("[S]: Got a connection request from a client at", addr)
 
+	rss.close()
 
 createDict()
 server()

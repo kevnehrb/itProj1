@@ -29,3 +29,7 @@ print("socket1 connected to ts")
 socket2ServerBinding = (socketHostName, rsListenPort)
 socket2.connect(socket2ServerBinding)
 print("socket2 connected to rs")
+
+socket1.close()
+socket2.close()
+exit()
