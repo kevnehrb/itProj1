@@ -1,5 +1,7 @@
 import socket as mysoc
+import sys
 
+rsListenPort = int(sys.argv[1])
 dns = []
 
 def createDict():
@@ -28,23 +30,22 @@ def lookUp(hostname):
 
 def server():
 	try:
-		rss=mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
+		rss = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
 		print("[C]: RS socket created")
 	except mysoc.error as err:
-		print('{} \n'.format("socket open error ",err))
+		print('{} \n'.format("socket open error ", err))
 
-	server_binding=('',50007)
+	server_binding = ('', rsListenPort)
 	rss.bind(server_binding)
 	rss.listen(1)
-	host=mysoc.gethostname()
-	print("[S]: Server host name is: ",host)
-	localhost_ip=(mysoc.gethostbyname(host))
-	print("[S]: Server IP address is  ",localhost_ip)
-	csockid,addr=rss.accept()
+	host = mysoc.gethostname()
+	print("[S]: Server host name is: ", host)
+	localhost_ip = (mysoc.gethostbyname(host))
+	print("[S]: Server IP address is  ", localhost_ip)
+	csockid, addr = rss.accept()
 	print ("[S]: Got a connection request from a client at", addr)
 
 
-
-
 createDict()
+server()
 lookUp("www.rutgers.")
