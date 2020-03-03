@@ -6,12 +6,13 @@ dns = []
 TSHostname = ""
 
 def createDict():
+	global TSHostname
 	inputFile = open("PROJI-DNSRS.txt","r")
 	entries = inputFile.readlines()
 	for i in entries:
 		newEntry = i.split()
 		if newEntry[2] == 'NS':
-			TSHostname = newEntry[2]
+			TSHostname = newEntry[0]
 		dns.append(newEntry)
 	inputFile.close()
 
@@ -34,6 +35,9 @@ def lookUp(hostname):
 			break
 	if not found:
 		print("[S]: match not found")
+		if len(TSHostname) == 0:
+			print("ERROR - No TSHostname")
+			exit()
 		result = TSHostname + " - NS"
 	return result
 
