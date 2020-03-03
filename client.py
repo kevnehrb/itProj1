@@ -24,12 +24,12 @@ socketHostName = mysoc.gethostbyname(mysoc.gethostname())
 # connect socket 1
 socket1ServerBinding = (socketHostName, tsListenPort)
 socket1.connect(socket1ServerBinding)
-print("socket1 connected to ts")
+print("[C]: socket1 connected to ts")
 
 # connect socket 2
 socket2ServerBinding = (socketHostName, rsListenPort)
 socket2.connect(socket2ServerBinding)
-print("socket2 connected to rs")
+print("[C]: socket2 connected to rs")
 
 
 #query hostNames
@@ -38,21 +38,22 @@ with open(filepath) as f:
     line = f.readline()
     while line:
         hostname = line.rstrip()
-        print("querying {} on rs".format(hostname))
-        socket2.send(hostname.encode('utf-8'))
-        responseFromRS = socket2.recv(100).encode('utf-8')
+        print("[C]: querying {} on rs".format(hostname))
+        socket2.send(hostname)
+        responseFromRS = socket2.recv(100)
         if len(responseFromRS) == 0:
             # error
-            print("ERROR - something wrong with rs server code")
+            print("[C]: ERROR - something wrong with rs server code")
             exit()
         if responseFromRS[-1] == 'A':
             resolvedFile.write(responseFromRS + '\n')
         else:
-            socket1.send(hostname.encode('utf-8'))
-            responseFromTS = socket1.recv(100).encode('utf-8')
+            print("[C]: querying {} on ts".format(hostname))
+            socket1.send(hostname)
+            responseFromTS = socket1.recv(100)
             if len(responseFromTS) == 0:
                 # error
-                print("ERROR - something wrong with ts server code")
+                print("[C]: ERROR - something wrong with ts server code")
                 exit()
             resolvedFile.write(responseFromTS + '\n')
 
