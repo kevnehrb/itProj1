@@ -3,13 +3,15 @@ import sys
 
 rsListenPort = int(sys.argv[1])
 dns = []
-
+TSHostname = ""
 
 def createDict():
 	inputFile = open("PROJI-DNSRS.txt","r")
 	entries = inputFile.readlines()
 	for i in entries:
 		newEntry = i.split()
+		if newEntry[2] == 'NS':
+			TSHostname = newEntry[2]
 		dns.append(newEntry)
 	inputFile.close()
 
@@ -27,12 +29,12 @@ def lookUp(hostname):
 		print("[S]: comparing {} with {}".format(hostname, i[0]))
 		if hostname.lower() == i[0].lower():
 			print("[S]: match found")
-			result += " "+i[1]+" "+i[2]
+			result = i[0] + " " + i[1] + " " + i[2]
 			found = True
 			break
 	if not found:
 		print("[S]: match not found")
-		result += " - Error: HOST NOT FOUND"
+		result = TSHostname + " - NS"
 	return result
 
 

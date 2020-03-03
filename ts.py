@@ -27,7 +27,7 @@ def lookUp(hostname):
 		print("[S]: comparing {} with {}".format(hostname, i[0]))
 		if hostname.lower() == i[0].lower():
 			print("[S]: match found")
-			result += " "+i[1]+" "+i[2]
+			result = i[0] + " " + i[1] + " " + i[2]
 			found = True
 			break
 	if not found:

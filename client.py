@@ -32,7 +32,7 @@ socket2.connect(socket2ServerBinding)
 print("[C]: socket2 connected to rs")
 
 
-#query hostNames
+# query hostNames
 filepath = "PROJI-HNS.txt"
 with open(filepath) as f:
     line = f.readline()
