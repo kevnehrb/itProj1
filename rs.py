@@ -17,14 +17,18 @@ def printDict():
 		print(entry)
 
 def lookUp(hostname):
+	print("looking up hostname: " + hostname)
 	found = False
 	result = hostname
 	for i in dns:
-		for j in i:
-			if hostname.lower() == j.lower():
-				found = True
-				result += " "+i[1]+" "+i[2]
+		print("comparing {} with {}".format(hostname, i[0]))
+		if hostname.lower() == i[0].lower():
+			print("match found")
+			result += " "+i[1]+" "+i[2]
+			found = True
+			break
 	if not found:
+		print("match not found")
 		result += " - Error: HOST NOT FOUND"
 	return result
 
@@ -45,8 +49,12 @@ def server():
 	csockid, addr = rss.accept()
 	print ("[S]: Got a connection request from a client at", addr)
 
+	hostname = csockid.recv(100).encode('utf-8')
+	while len(hostname) != 0:
+		csockid.send(lookUp(hostname).encode('utf-8'))
+		hostname = csockid.recv(100).encode('utf-8')
+
 	rss.close()
 
 createDict()
 server()
-lookUp("www.rutgers.")

@@ -1,6 +1,8 @@
 import socket as mysoc
 import sys
 
+resolvedFile = open("RESOLVED.txt", "w")
+
 rsHostName = sys.argv[1]
 rsListenPort = int(sys.argv[2])
 tsListenPort = int(sys.argv[3])
@@ -19,7 +21,6 @@ except mysoc.error as err:
 
 socketHostName = mysoc.gethostbyname(mysoc.gethostname())
 
-
 # connect socket 1
 socket1ServerBinding = (socketHostName, tsListenPort)
 socket1.connect(socket1ServerBinding)
@@ -30,6 +31,35 @@ socket2ServerBinding = (socketHostName, rsListenPort)
 socket2.connect(socket2ServerBinding)
 print("socket2 connected to rs")
 
+
+#query hostNames
+filepath = "PROJI-HNS.txt"
+with open(filepath) as f:
+    line = f.readline()
+    while line:
+        hostname = line.rstrip()
+        print("querying {} on rs".format(hostname))
+        socket2.send(hostname.encode('utf-8'))
+        responseFromRS = socket2.recv(100).encode('utf-8')
+        if len(responseFromRS) == 0:
+            # error
+            print("ERROR - something wrong with rs server code")
+            exit()
+        if responseFromRS[-1] == 'A':
+            resolvedFile.write(responseFromRS + '\n')
+        else:
+            socket1.send(hostname.encode('utf-8'))
+            responseFromTS = socket1.recv(100).encode('utf-8')
+            if len(responseFromTS) == 0:
+                # error
+                print("ERROR - something wrong with ts server code")
+                exit()
+            resolvedFile.write(responseFromTS + '\n')
+
+        line = f.readline()
+
+
+f.close()
+resolvedFile.close()
 socket1.close()
 socket2.close()
-exit()
