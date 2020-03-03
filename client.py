@@ -48,8 +48,8 @@ with open(filepath) as f:
             if not socket1Connected:
                 # connect socket 1
                 tsHostName = responseFromRS.split()[0]
+                # using tsHostName, obtain ts server IP address
                 tsHostIP = mysoc.gethostbyname(tsHostName)
-                print("tsHostIP: {}".format(tsHostIP))
                 socket1ServerBinding = (tsHostIP, tsListenPort)
                 socket1.connect(socket1ServerBinding)
                 print("[C]: socket1 connected to ts")
