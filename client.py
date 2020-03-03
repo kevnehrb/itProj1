@@ -4,6 +4,7 @@ import sys
 resolvedFile = open("RESOLVED.txt", "w")
 
 rsHostName = sys.argv[1]
+tsHostName = ""
 rsListenPort = int(sys.argv[2])
 tsListenPort = int(sys.argv[3])
 
@@ -19,17 +20,13 @@ try:
 except mysoc.error as err:
     print('{} \n'.format("socket2 open error ", err))
 
-socketHostName = mysoc.gethostbyname(mysoc.gethostname())
-
-# connect socket 1
-socket1ServerBinding = (socketHostName, tsListenPort)
-socket1.connect(socket1ServerBinding)
-print("[C]: socket1 connected to ts")
-
 # connect socket 2
-socket2ServerBinding = (socketHostName, rsListenPort)
+rsHostIP = mysoc.gethostbyname(rsHostName)
+socket2ServerBinding = (rsHostIP, rsListenPort)
 socket2.connect(socket2ServerBinding)
 print("[C]: socket2 connected to rs")
+
+socket1Connected = False
 
 
 # query hostNames
@@ -48,6 +45,15 @@ with open(filepath) as f:
         if responseFromRS[-1] == 'A':
             resolvedFile.write(responseFromRS + '\n')
         else:
+            if not socket1Connected:
+                # connect socket 1
+                tsHostName = responseFromRS.split()[0]
+                tsHostIP = mysoc.gethostbyname(tsHostName)
+                print("tsHostIP: {}".format(tsHostIP))
+                socket1ServerBinding = (tsHostIP, tsListenPort)
+                socket1.connect(socket1ServerBinding)
+                print("[C]: socket1 connected to ts")
+                socket1Connected = True
             print("[C]: querying {} on ts".format(hostname))
             socket1.send(hostname)
             responseFromTS = socket1.recv(100)
