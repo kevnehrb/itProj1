@@ -21,19 +21,12 @@ def printDict():
 
 def lookUp(hostname):
 	print("[S]: looking up hostname: " + hostname)
-	found = False
-	result = hostname
 	for i in dns:
-		print("[S]: comparing {} with {}".format(hostname, i[0]))
 		if hostname.lower() == i[0].lower():
 			print("[S]: match found")
-			result = i[0] + " " + i[1] + " " + i[2]
-			found = True
-			break
-	if not found:
-		print("[S]: match not found")
-		result += " - Error: HOST NOT FOUND"
-	return result
+			return i[0] + " " + i[1] + " " + i[2]
+	print("[S]: match not found")
+	return hostname + " - Error: HOST NOT FOUND"
 
 
 def server():
